@@ -1,0 +1,13 @@
+import io
+from time import sleep
+
+def WaitUntail(func,time):        
+    try:
+        for time in time:
+            func()
+            return True
+    except expression as identifier:
+            return  False
+        pass
+    finally:
+        pass
