@@ -30,7 +30,7 @@ def prettyXml(element, indent, newline, level = 0):
         # 对子元素进行递归操作 
         prettyXml(subelement, indent, newline, level = level + 1)     
 
-def GenerateXML(elements):
+def GenerateXML(elements,savePath,xmlSavePath):
     # generate root node
     root = Element('vedio')
     for index,element in enumerate(elements):
@@ -39,7 +39,7 @@ def GenerateXML(elements):
         time = SubElement(cut,'time')
         time.text = '2'
         img = SubElement(cut,'img')
-        img.text = 'F:\Project\CoolMaker\Images\image{}.png'.format(index)
+        img.text = savePath+'\image{}.png'.format(index)
         author = SubElement(cut,'author')
         author.text =  element.find_element_by_tag_name("span").text
         content = SubElement(cut,'content')
@@ -48,10 +48,10 @@ def GenerateXML(elements):
         like.text = element.find_element_by_id("vote-count-middle").text
     tree = ElementTree(root)
     # write out xml data
-    tree.write('result.xml', encoding = 'utf-8')
+    tree.write(xmlSavePath, encoding = 'utf-8')
     prettyXml(tree.getroot(),'\t', '\n')
-    tree.write('result.xml', encoding = 'utf-8')
-    return 'result.xml'
+    tree.write(xmlSavePath, encoding = 'utf-8')
+    return xmlSavePath
 
 # doc = etree.parse('result.xml')
 # cuts = doc.xpath("cut")

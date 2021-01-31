@@ -11,7 +11,7 @@ from PIL import Image
 
 class Article:
  url = ('https://www.youtube.com/watch?v=E22DvRW3Few')
- def GotoUrl(url):
+ def GotoUrl(self,url):
     USERNAME = "Administrator"
     options = webdriver.ChromeOptions()
     options.add_argument('--start-maximized') 
@@ -21,7 +21,7 @@ class Article:
     driver.get(url)
     return driver
 
- def GetHotComment(driver):
+ def GetHotComment(self,driver):
     sleep(3)
     #删除搜索框
     driver.execute_script("document.getElementById('container').remove()")    
@@ -56,15 +56,15 @@ class Article:
 
     return hotmComment
 
- def ElementScreenShot(driver,elements):
+ def ElementScreenShot(self,driver,elements,savePath):
      for index, element in enumerate(elements):         
          driver.execute_script("""
                                    arguments[0].style.width='1813px';
                                    arguments[0].style.height='918px';
                                """,element)
-         element.screenshot("F:\Project\CoolMaker\Images\image{0}{1}".format(index,".png"))          
+         element.screenshot(savePath+"\image{0}{1}".format(index,".png"))          
 
-
+'''
  driver = GotoUrl(url)
  elements = GetHotComment(driver)
  ElementScreenShot(driver,elements)
@@ -72,6 +72,7 @@ class Article:
  Picture.checkEmptyPicture(xml)
  Vedio.writeVedioList("Images/list.txt",'result.xml')
  Vedio.combineVedio()
+ '''
 
 
 
