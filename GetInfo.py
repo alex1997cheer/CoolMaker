@@ -34,15 +34,27 @@ class GetInfo:
         urlList=set()
         count = 0
         step = 0
+        beforeLen=0 
+        maxRetryCount=10 #最大重爬次数 
+        retryCount=0 #重爬次数
         while len(urlList) < self.GrabNumber:
             eleList=driver.find_elements_by_xpath('//*[@id="contents"]/ytd-video-renderer')
             for row in eleList:
                 href=row.find_element_by_id('video-title').get_attribute('href')
                 if len(urlList)<self.GrabNumber:
                     urlList.add(href)
+            if len(urlList)<=beforeLen:
+                if retryCount < maxRetryCount:
+                    print('此次没有更新数据，尝试重新爬取')
+                    retryCount+=1
+                else:
+                    print('重爬达到上限，关闭爬取')
+                    retryCount=0    
+                    break
+            beforeLen=len(urlList)
             count += 1
             step += 1000 
-            driver.execute_script("var q=document.documentElement.scrollTop={}".format(step))
+            #driver.execute_script("var q=document.documentElement.scrollTop={}".format(step))
         driver.close()
         print('列表数据爬取完毕,准备进入详情页')
         time.sleep(5)
