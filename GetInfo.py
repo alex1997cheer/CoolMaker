@@ -54,7 +54,7 @@ class GetInfo:
             beforeLen=len(urlList)
             count += 1
             step += 1000 
-            #driver.execute_script("var q=document.documentElement.scrollTop={}".format(step))
+            driver.execute_script("var q=document.documentElement.scrollTop={}".format(step))
         driver.close()
         print('列表数据爬取完毕,准备进入详情页')
         time.sleep(5)
@@ -70,6 +70,8 @@ class GetInfo:
             xml = JXml.GenerateXML(elements,path,xmlPath)
             print('生成xml结束')
             Picture.checkEmptyPicture(xml)
+            Vedio.writeVedioList("Images/list.txt",xmlPath,path)
+            Vedio.combineVedio(path)
             driver.close()
             print(url+'爬取完毕,准备进入下一条')
            # Vedio.writeVedioList("Images/list.txt",'result.xml')
