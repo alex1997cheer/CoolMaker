@@ -1,11 +1,16 @@
 import lxml
 from lxml import etree
 import os
-
+from pathlib import Path
 
 
 
 def writeVedioList(txtUrl,xmlUrl,savePath):
+    if not os.path.exists(txtUrl):
+        print('list.txt文件不存在,生成文件中')
+        fd = open(txtUrl, mode="w", encoding="utf-8")
+        fd.close()
+        print('list.txt文件已生成')
     fo = open(txtUrl, "r+")
     print ("文件名: ", fo.name)
     root = etree.parse(xmlUrl)
@@ -23,7 +28,7 @@ def writeVedioList(txtUrl,xmlUrl,savePath):
 
 
 def combineVedio(savePath):
-    os.system('ffmpeg -y -f concat -safe 0 -i Images/list.txt -b 5000k -vcodec libx264 -c copy Images/app.avi')
+    os.system(f'ffmpeg -y -f concat -safe 0 -i {savePath}/list.txt -b 5000k -vcodec libx264 -c copy Images/app.avi')
     # 添加白色背景
     os.system(f'ffmpeg -y -f lavfi -i color=c=white:s=1920x1080 -i Images/app.avi -b 5000k -vcodec libx264 -filter_complex overlay=x=58:79 -t 190 {savePath}/app2.avi')
     # 添加gig

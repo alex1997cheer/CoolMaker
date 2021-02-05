@@ -46,6 +46,7 @@ class GetInfo:
             if len(urlList)<=beforeLen:
                 if retryCount < maxRetryCount:
                     print('此次没有更新数据，尝试重新爬取')
+                    time.sleep(2)
                     retryCount+=1
                 else:
                     print('重爬达到上限，关闭爬取')
@@ -59,6 +60,7 @@ class GetInfo:
         print('列表数据爬取完毕,准备进入详情页')
         time.sleep(5)
         article= Article()
+        print('总条数:'+str(len(urlList)))
         for url in iter(urlList):
             print('爬取详情页面在:'+url)
             driver = article.GotoUrl(url)
@@ -70,7 +72,7 @@ class GetInfo:
             xml = JXml.GenerateXML(elements,path,xmlPath)
             print('生成xml结束')
             Picture.checkEmptyPicture(xml)
-            Vedio.writeVedioList("Images/list.txt",xmlPath,path)
+            Vedio.writeVedioList(path+"/list.txt",xmlPath,path)
             Vedio.combineVedio(path)
             driver.close()
             print(url+'爬取完毕,准备进入下一条')
@@ -89,11 +91,6 @@ class GetInfo:
     def createXmlSavePath(self,url):
         md5Name=md5(url.encode('utf8')).hexdigest()
         savePath =f"F:/Project/CoolMaker/Xml/{md5Name}.xml" 
-        file = Path(savePath)
-        '''
-        if not file.is_file:
-            os.mknod(savePath)
-        '''
         return savePath
     #根据路径进入详情页获取信息
     def getInfoMessage(self,url):
@@ -122,5 +119,5 @@ class GetInfo:
         driver.close()
         return True
 
-getInfo=GetInfo('中国 抖音','F:\Project\CoolMaker\Driver\chromedriver.exe',50)
+getInfo=GetInfo('Chiến tranh Trung-Việt','F:\Project\CoolMaker\Driver\chromedriver.exe',50)
 getInfo.startGet()
